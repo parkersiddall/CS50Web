@@ -1,0 +1,113 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body%}
+
+
+    {% if message %}
+    <div class="alert alert-secondary" role="alert" style="text-align:center;">
+            {{ message }}
+    </div>
+    {% endif %}
+
+
+
+<div class="container-fluid">
+
+
+    <div class="row" style="border-bottom: 1px solid lightgray; padding: 20px;">
+        <div class="col-4">
+            <img src="{{ listing.url }}" alt="Photo of listing" style="width:300px;">
+        </div>
+        <div class="col-8">
+
+
+            {% if user.is_authenticated %}
+
+            {% if user.username == listing.winner and listing.status == "closed" %}
+                <p>YOU HAVE WON!</p>
+            {% endif %}
+
+
+
+
+            {% endif %}
+
+
+
+            <h2>{{ listing.title }}</h2>
+            <p>{{ listing.description }}</p>
+            <br>
+            <div class="listing_details">
+                <p><b>Listed by: </b>{{ listing.creator }}</p>
+                <p><b>Category: </b>{{ listing.category }}</p>
+                <p><b>Listed on: </b>{{ listing.created }}</p>
+                <p><b>Starting bid: </b>${{ listing.starting_bid }}</p>
+            </div>
+
+
+            {% for item in watchlist %}
+                <p style="display:inline;">WATCHLISTED</p>
+                <form action="{% url 'listing' id=listing.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="remove_watchlist">Remove from watchlist </button>
+                </form>
+            {% empty%}
+                <form action="{% url 'listing' id=listing.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="add_watchlist">Add to watchlist </button>
+                </form>
+            {% endfor %}
+
+
+        </div>
+        <div class="col-4">
+            <h3>${{ listing.bid }}</h3>
+
+            {% if user.is_authenticated and listing.status == "open" %}
+                <form class="" action="{% url 'listing' id=listing.id %}" method="post">
+                    {% csrf_token %}
+                    {{ bid_form }}
+                    <button type="submit" name="submit_bid">Submit bid</button>
+                </form>
+            {% else %}
+                <p>This listing is closed.</p>
+            {% endif %}
+            <br>
+            {% if listing.status == "open" %}
+            {% if listing.creator == user.username %}
+                <form action="{% url 'listing' id=listing.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="end_bid">End bidding</button>
+                </form>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+
+
+    {% if user.is_authenticated %}
+        <form action=" {% url 'listing' id=listing.id %}" method="post">
+            {% csrf_token %}
+            {{ comment_form }}
+            <button type="submit" name="submit_comment">Submit Comment</button>
+        </form>
+    {% else %}
+        Sign in to comment.
+    {% endif %}
+
+    <h3>Comments</h3>
+    {% for comment in comments %}
+        <div class="">
+            <h5>Posted by <strong>{{ comment.user }}</strong> on {{ comment.posted }}</h5>
+            <p>{{ comment.comment }}</p>
+        </div>
+    {% empty %}
+        No comments
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

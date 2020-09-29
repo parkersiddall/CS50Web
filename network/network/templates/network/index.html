@@ -1,0 +1,100 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+
+<!--MESSAGES-->
+{% if success_message %}
+<div class="alert alert-success center_alert" role="alert">
+  {{ success_message }}
+</div>
+{% endif %}
+
+{% if error_message %}
+<div class="alert alert-danger center_alert" role="alert">
+  {{ error_message }}
+</div>
+{% endif %}
+
+    <div class="container-fluid"> <!-- bootstrap container begins -->
+        <h3 id="all">All Posts</h3>
+        <!--New Post Box -->
+        {% if user.is_authenticated %}
+        <div class="row new-post-box">
+            <div id="index-new-post" class="col-12">
+                <h5>New Post</h5>
+                <form action="{%  url 'index' %}" method="post">
+                    {% csrf_token %}
+                    <textarea id="new-post" class="form-control" name="new-post" rows="2" cols="80"></textarea>
+                    <button type="submit" name="submit_post" class="btn btn-primary button-post">Post</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        <!-- end new post box -->
+
+    <!-- All posts -->
+    {% for post in page_obj %}
+    <div class="row justify-content-center">
+        <div id="postbox_{{post.id}}" class="col-11 post-box">
+            <h5> <a href="{% url 'profile' username=post.user.username %}">{{ post.user }}</a></h5>
+            <br>
+            <p id="content_{{post.id}}">{{ post.content }}</p>
+            {% if post.user.username == user.username %} <!-- check to see if it is users posts, show edit button, edit form -->
+            <form id="edit_form_{{ post.id }}" class="edit_content">
+            {% csrf_token %}
+                <textarea id="textarea_{{post.id}}" class="form-control" name="name" rows="3" cols="80">{{ post.content }}</textarea>
+                <button id="edit_form_button_{{post.id}}" class="edit_submit btn btn-primary btn-sm" type="submit">Done</button>
+            </form>
+            {% endif %}
+            <br>
+            <p> <span id="postlikes_{{post.id}}">&#10084; {{ post.post_likes.all|length }}</span>
+            <!-- conditional statment for like and unlike -->
+            {% if user.is_authenticated %}
+            <span id="like_unlike_{{post.id}}" class="">
+                {% if user.username|add:" " in post.post_likes.all|stringformat:"s" %}
+                    | <span id="unlike_{{ post.id }}" class="unlike" style="display:inline">Unlike</span>
+                    <span id="like_{{ post.id }}" class="like" style="display:none">Like</span>
+                {% else %}
+                    | <span id="unlike_{{ post.id }}" class="unlike" style="display:none">Unlike</span>
+                     <span id="like_{{ post.id }}" class="like" style="display:inline">Like</span>
+                {% endif %}
+            </span>
+
+            {% endif %}
+            <!-- end like and unlike code -->
+            <p style="display: inline; color: gray"><em>Posted on {{ post.date }}</em></p>
+            {% if post.user.username == user.username %}
+                <button id="edit_{{post.id}}" class="edit btn btn-danger btn-sm"> Edit</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+<!-- pagination -->
+    <div class="row pagination-content">
+        <div class="col-12">
+            <nav aria-label="label">
+                    <ul class="pagination" style="justify-content: center;">
+                        {% if page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="false">Previous</a>
+                          </li>
+                          {% endif %}
+
+                          {% if page_obj.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                          </li>
+                          {% endif %}
+                    </ul>
+              <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+          </nav>
+        </div>
+    </div>
+
+
+    </div> <!--end container -->
+
+{% endblock %}

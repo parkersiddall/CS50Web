@@ -1,0 +1,14 @@
+{% extends "encyclopedia/layout.html" %}
+{% load markdown_deux_tags %}
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+
+    {{ entry|markdown }}
+    <a href="{% url 'edit' entry=title %}" style="color:red">Edit content</a>
+
+{% endblock %}

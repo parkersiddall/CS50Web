@@ -1,0 +1,24 @@
+{% extends "encyclopedia/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Search - {{ keyword }}
+{% endblock %}
+
+
+{% block body %}
+
+    <h1>These are the results for <em>{{ keyword }}: </em></h1>
+
+    <ul>
+        {% for entry in similar_entries %}
+            <li><a href="/{{ entry }}"> {{ entry }}</a></li>
+        {% empty %}
+            <p>No results.</p>
+            <img src="{% static 'encyclopedia/images/travolta.gif' %}" alt="No results.">
+
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "encyclopedia/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block body %}
+
+    <h1>Error</h1>
+    <p> {{ message }} </p>
+    <img src="{% static 'encyclopedia/images/nothing.gif' %}" alt="Travolta looking confused">
+
+{% endblock %}

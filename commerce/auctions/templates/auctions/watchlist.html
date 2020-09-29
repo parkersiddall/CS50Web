@@ -1,0 +1,39 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+
+    <div class="container-fluid">
+    {% for item in watchlist %}
+        <div class="row listing">
+            <div class="col-2 listing_photo">
+            {% if item.listing.url != Null%}
+                <img src="{{ item.listing.url }}" alt="Listing photo">
+            {% else %}
+                No image
+            {% endif %}
+
+            </div>
+            <div class="col-8">
+                <h3><a href="{% url 'listing' id=item.listing.id %}">{{ item.listing.title }}</a></h3>
+                {% if item.listing.bid != 0 %}
+                <p><b>Bidding at:</b> ${{ item.listing.bid }}</p>
+                {% else %}
+                <p><b>Bidding at:</b> ${{ item.listing.starting_bid }}</p>
+                {% endif %}
+                <p><b>Listed: </b>{{ item.listing.created }}</p>
+                <p><b>Status: </b>{% if item.listing.status == "open" %}Open {% else %}Closed {% endif %}</p>
+                <p>{{ item.listing.description }}</p>
+            </div>
+        </div>
+    {% empty %}
+    <p>You have no items in your watchlist.</p>
+
+    {% endfor %}
+    </div>
+
+
+
+
+{% endblock %}

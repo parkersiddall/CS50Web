@@ -1,0 +1,62 @@
+.post-box {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: 2px 2px 5px darkgray;
+    background-color: whitesmoke;
+}
+.new-post-box {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: 2px 2px 5px darkgray;
+    background-color: white;
+    position: sticky;
+    top: 5px;
+    z-index: 1000;
+}
+
+.button-post {
+    margin: 5px;
+}
+
+.center_alert {
+    text-align: center;
+}
+
+p {
+    margin: 0;
+}
+
+.center-row {
+    text-align: center;
+}
+
+.pagination-content {
+    text-align: center;
+
+}
+
+.edit {
+    margin: 5px;
+    float:right;
+    display: inline;
+}
+
+.edit_content {
+    display: none;
+}
+.edit_submit {
+    margin: 5px;
+}
+
+.unlike {
+    color: red;
+    display: none;
+    cursor: pointer;
+}
+
+.like {
+    color: blue;
+    cursor: pointer;
+}

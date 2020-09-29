@@ -1,0 +1,45 @@
+body {
+    padding: 10px;
+}
+
+
+.listing {
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    margin: 10px;
+    height: auto;
+}
+
+.listing_photo {
+    width: 200px;
+    text-align: center;
+    border-right: 1px dotted lightgray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.listing_photo img {
+    max-height:100px;
+    margin-top: 25%;
+    margin-bottom: 25%;
+
+}
+
+textarea, input, select {
+    display: block;
+}
+
+.listing_details p {
+    font-size: 10px;
+}
+.comment_details {
+    font-size: 10px;
+    font-style: italic;
+}
+
+.listing_page_image {
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+}

@@ -1,0 +1,108 @@
+{% extends "network/layout.html" %}
+{% load static %}
+<!-- ERROR MESSAGE -->
+{% if error_message %}
+<div class="alert alert-danger center_alert" role="alert">
+  {{ error_message }}
+</div>
+{% endif %}
+
+{% block body%}
+<div class="container-fluid"> <!-- containter begins-->
+    <hr>
+    <div class="row center-row">
+        <div class="col-12">
+            <h1> {{ profile_user.username }}</h1>
+            <p>Followers: {{ followers|length }}</p>
+            <p>Following: {{ following|length }}</p>
+            <br>
+            <!-- conditional statement for follow button -->
+            {% if user.is_authenticated %}
+                {% if profile_user.username != user.username %} <!-- check to be sure user is not the same as profile -->
+                    {% if user.username|add:" " in followers|stringformat:'s' %}
+                    <form class="" action="{% url 'profile' username=profile_user.username %}" method="post">
+                        {% csrf_token %}
+                        <button name="following" type="submit" class="btn btn-primary">Following</button>
+                    </form>
+
+                    {% else %}
+                    <form class="" action="{% url 'profile' username=profile_user.username  %}" method="post">
+                        {% csrf_token %}
+                        <button name="follow" type="submit" class="btn btn-outline-primary">Follow</button>
+                    </form>
+
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+
+        </div>
+    </div>
+    <hr>
+
+    <!-- user posts -->
+    <h3>Posts</h3>
+    {% for post in page_obj %}
+    <div class="row justify-content-center">
+        <div id="postbox_{{post.id}}" class="col-11 post-box">
+            <h5> <a href="{% url 'profile' username=post.user.username %}">{{ post.user }}</a></h5>
+            <br>
+            <p id="content_{{post.id}}">{{ post.content }}</p>
+            {% if post.user.username == user.username %} <!-- check to see if it is users posts, show edit button, edit form -->
+            <form id="edit_form_{{ post.id }}" class="edit_content">
+            {% csrf_token %}
+                <textarea id="textarea_{{post.id}}" class="form-control" name="name" rows="3" cols="80">{{ post.content }}</textarea>
+                <button id="edit_form_button_{{post.id}}" class="edit_submit btn btn-primary btn-sm" type="submit">Done</button>
+            </form>
+            {% endif %}
+            <br>
+            <p> <span id="postlikes_{{post.id}}">&#10084; {{ post.post_likes.all|length }}</span>
+            <!-- conditional statment for like and unlike -->
+            {% if user.is_authenticated %}
+            <span id="like_unlike_{{post.id}}" class="">
+                {% if user.username|add:" " in post.post_likes.all|stringformat:"s" %}
+                    | <span id="unlike_{{ post.id }}" class="unlike" style="display:inline">Unlike</span>
+                    <span id="like_{{ post.id }}" class="like" style="display:none">Like</span>
+                {% else %}
+                    | <span id="unlike_{{ post.id }}" class="unlike" style="display:none">Unlike</span>
+                     <span id="like_{{ post.id }}" class="like" style="display:inline">Like</span>
+                {% endif %}
+            </span>
+
+            {% endif %}
+            <!-- end like and unlike code -->
+            <p style="display: inline; color: gray"><em>Posted on {{ post.date }}</em></p>
+            {% if post.user.username == user.username %}
+                <button id="edit_{{post.id}}" class="edit btn btn-danger btn-sm"> Edit</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- end user posts -->
+
+    <div class="row pagination-content">
+        <div class="col-12">
+            <nav aria-label="label">
+                    <ul class="pagination" style="justify-content: center;">
+                        {% if page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="false">Previous</a>
+                          </li>
+                          {% endif %}
+
+                          {% if page_obj.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                          </li>
+                          {% endif %}
+                    </ul>
+              <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+          </nav>
+        </div>
+    </div>
+
+
+</div><!--container ends-->
+
+{% endblock %}

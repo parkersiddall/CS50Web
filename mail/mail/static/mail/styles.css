@@ -1,0 +1,60 @@
+textarea {
+    min-height: 400px;
+}
+
+.email_line_unread{
+    background-color: white;
+    height: 40px;
+    border: 1px solid darkgray;
+}
+.email_line_read{
+    background-color: lightgray;
+    height: 40px;
+    border: 1px solid darkgray;
+}
+
+.subject {
+    height: 40px;
+    padding-right: 100px;
+    display: inline-grid;
+    align-items: center;
+}
+
+.sender {
+    display: inline-grid;
+    height: 40px;
+    width: 300px;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.date {
+    height: 40px;
+    float: right;
+    padding-right: 10px;
+    align-items: center;
+    display: inline-grid;
+
+}
+
+.message-info {
+    padding: 10px;
+}
+
+#message-body {
+    white-space: pre-line;
+    white-space: pre-wrap;
+}
+
+p{
+    margin: 0;
+}
+
+#archive-button {
+    display: hidden;
+}
+
+.action-buttons {
+    display: inline;
+}

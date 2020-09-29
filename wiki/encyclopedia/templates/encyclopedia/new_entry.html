@@ -1,0 +1,25 @@
+{% extends "encyclopedia/layout.html" %}
+{% load static %}
+
+{% block title %}
+    New entry
+{% endblock %}
+
+{% block body %}
+    <h1>Sumbit a New Entry</h1>
+    <p>Complete the fields below and click submit in order to add your new entry to the encyclopedia.</p>
+
+    <form action="{% url 'new_entry' %}" method="POST">
+        {% csrf_token %}
+        <label for="title">Title:</label>
+        <input type="text" name="title" style="display:block;">
+
+        <label for="content">Markup Content:</label>
+        <textarea name="content" rows="2" cols="10" style="display:block;"></textarea>
+
+        <br>
+
+        <button input type="submit" name="submit_entry" style="display:block;">Submit Entry</button>
+
+    </form>
+{% endblock %}
